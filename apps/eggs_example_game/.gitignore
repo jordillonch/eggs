@@ -1,0 +1,6 @@
+log
+erl_crash.dump
+example_game.boot
+deps/*
+!deps/eggs
+ebin/*

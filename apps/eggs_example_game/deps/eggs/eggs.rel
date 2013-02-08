@@ -1,0 +1,16 @@
+{
+release,
+{"eggs","1"},
+{erts,"5.9.2"},
+[
+  {kernel,"2.15.2"},
+  {stdlib, "1.18.2"},
+  {sasl, "2.2.1"},
+  {crypto,"2.2"},
+  {compiler,"4.8.2"},
+  {syntax_tools,"1.6.9"},
+  {lager,"1.2.1"},
+%  {emysql,"0.2"},
+  {eggs,"1"}
+]
+}.

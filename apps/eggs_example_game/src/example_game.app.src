@@ -1,0 +1,7 @@
+{application, example_game,
+ [{description, "Core of game"},
+  {vsn, "1"},
+  {mod, {example_game_app, []}},
+  {registered, []},
+  {modules, [example_game_app]},
+  {applications, [stdlib, kernel, crypto, sasl, compiler, syntax_tools, lager, eggs]}]}.

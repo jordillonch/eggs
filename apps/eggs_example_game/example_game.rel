@@ -1,0 +1,11 @@
+{release,{"example_game",[]},
+         {erts,"5.9.2"},
+         [{stdlib,"1.18.2"},
+          {kernel,"2.15.2"},
+          {crypto,"2.2"},
+          {sasl,"2.2.1"},
+          {compiler,"4.8.2"},
+          {syntax_tools,"1.6.9"},
+          {lager,"1.2.1"},
+          {eggs,"1"},
+          {example_game,"1"}]}.

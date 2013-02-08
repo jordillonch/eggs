@@ -1,0 +1,7 @@
+{application, eggs,
+ [{description, "Erlang Generic Games Server"},
+  {vsn, "1"},
+  {mod, {eggs_app, []}},
+  {registered, []},
+  {modules, [eggs_app]},
+  {applications, [stdlib, kernel, crypto, sasl, compiler, syntax_tools, lager]}]}.
