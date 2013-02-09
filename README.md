@@ -49,7 +49,7 @@ And here you can see a scheme of the example game
 
 ## Benchmarks
 
-Please don't take these results very seriously.
+Please don't take these results seriously.
 
 I have used a MacBook Pro 2.53 GHz Intel Core 2 Duo/4Gb 1067 MHz DDR3.
 
@@ -71,7 +71,10 @@ The average move time with 1000 players doing 1000 moves everyone, is 18 ms. Thi
 Clone repository and then:
 
     cd <cloned dir>/apps/eggs_example_game
+    ./rebar get-deps
+    ./rebar compile
     make
+
 
 
 ## Quick start
