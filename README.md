@@ -61,7 +61,7 @@ The test only check the core implementation. Network connections are not tested.
 
 The average move time with 10 players doing 1000 moves everyone, is 0.20 ms.
 
-The average move time with 1000 players doing 1000 moves everyone, is 18 ms. This result with a i3 CPU it is reduced to only 8 ms.
+The average move time with 1000 players doing 1000 moves everyone, is 18 ms. This result with a i3 CPU is reduced to only 8 ms.
 
 [Download all results](https://raw.github.com/jordillonch/eggs/master/apps/eggs_example_game/docs/benchmarks.ods)
 
