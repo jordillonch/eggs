@@ -18,10 +18,26 @@
 -module(eggs_gateway_websocket).
 
 %% API
--export([behaviour_info/1]).
+-export([behaviour_info/1, connect/0, disconnect/0, send_to_client/1]).
 
+-spec behaviour_info(_) -> 'undefined' | [{'connect',0} | {'disconnect',0} | {'handle_event',2} | {'send_command',1},...].
 behaviour_info(callbacks) ->
   [{connect, 0}, {disconnect, 0}, {send_command, 1}, {handle_event, 2}];
 
 behaviour_info(_) ->
   undefined.
+
+-spec connect() -> any().
+connect() ->
+  % TODO
+  ok.
+
+-spec disconnect() -> any().
+disconnect() ->
+  % TODO
+  ok.
+
+-spec send_to_client(any()) -> any().
+send_to_client(_EventMessageCoded) ->
+  % TODO
+  ok.

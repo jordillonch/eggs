@@ -25,17 +25,20 @@
 -export([init/1, start_session/1]).
 
 %% API
+-spec start_link() -> 'ignore' | {'error',_} | {'ok',pid()}.
 start_link() ->
   lager:debug("Starting session supervisor..."),
   supervisor:start_link(?MODULE, []).
 
 %% supervisor callbacks
+-spec init([]) -> {'ok',{{'one_for_one',5,10},[]}}.
 init([]) ->
 %%   WorkerSpecs = {make_ref(), {SessionModule, start_link, []}, temporary, 2000, worker, [SessionModule]},
 %%   StartSpecs = {{simple_one_for_one, 0, 1},[WorkerSpecs]},
 %%   {ok, StartSpecs}.
   {ok, {{one_for_one, 5, 10}, []}}.
 
+-spec start_session(atom() | pid() | {atom(),atom()}) -> {'ok','undefined' | pid()}.
 start_session(SessionSupPid) ->
   lager:debug("Starting new session..."),
   {ok, SessionPid} = supervisor:start_child(SessionSupPid, []),

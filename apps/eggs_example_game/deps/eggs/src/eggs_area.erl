@@ -21,6 +21,7 @@
 %% API
 -export([initialize/1, entity_add/3, entity_remove/2, entity_move/3, get_entities_list/1]).
 
+-spec initialize(_) -> {'ok',{pid(),_,[]}}.
 initialize(AreaSpecs) ->
   % init event manager
   {ok, EventManagerPid} = gen_event:start_link(),
@@ -31,6 +32,7 @@ initialize(AreaSpecs) ->
   {ok, AreaDb}.
 
 
+-spec entity_add({atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any()]},{_,_,_},_) -> {'ok',{atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any(),...]}}.
 entity_add(AreaDb, Entity, Coords) ->
   {EventManagerPid, AreaSpecs, EntityList} = AreaDb,
   EntityId = eggs_entity:get_id(Entity),
@@ -43,6 +45,7 @@ entity_add(AreaDb, Entity, Coords) ->
   gen_event:notify(EventManagerPid, {entity_added, Entity, Coords}),
   {ok, NewAreaDb}.
 
+-spec entity_remove({atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any()]},{_,_,_}) -> {'ok',{atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any()]}}.
 entity_remove(AreaDb, Entity) ->
   {EventManagerPid, AreaSpecs, EntityList} = AreaDb,
   EntityId = eggs_entity:get_id(Entity),
@@ -55,6 +58,7 @@ entity_remove(AreaDb, Entity) ->
   gen_event:notify(EventManagerPid, {entity_removed, Entity}),
   {ok, NewAreaDb}.
 
+-spec entity_move({atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any()]},{_,_,_},_) -> {'ok',{atom() | pid() | {atom(),atom()} | {'via',atom(),_},_,[any(),...]}}.
 entity_move(AreaDb, Entity, Coords) ->
   {EventManagerPid, AreaSpecs, EntityList} = AreaDb,
   EntityId = eggs_entity:get_id(Entity),
@@ -65,6 +69,7 @@ entity_move(AreaDb, Entity, Coords) ->
   gen_event:notify(EventManagerPid, {entity_moved, Entity, Coords}),
   {ok, NewAreaDb}.
 
+-spec get_entities_list({_,_,_}) -> any().
 get_entities_list(AreaDb) ->
   {_EventManagerPid, _AreaSpecs, EntityList} = AreaDb,
   EntityList. % proplist

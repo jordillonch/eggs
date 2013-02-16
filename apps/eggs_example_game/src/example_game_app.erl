@@ -21,12 +21,14 @@
 -export([start/2, stop/1, start_new_game/0, game_stop/2]).
 
 %% start a game server
+-spec start('normal',[]) -> {'error',_} | {'ok',pid()} | {'ok',pid(),_}.
 start(normal, []) ->
 %%   lager:set_loglevel(lager_console_backend, debug),
   lager:set_loglevel(lager_console_backend, warning),
   lager:debug("Starting Example Game app..."),
   {ok, global:whereis_name(eggs_service)}.
 
+-spec start_new_game() -> {'ok',_,_}.
 start_new_game() ->
   System = example_game_system,
   World = example_game_world,
@@ -49,9 +51,11 @@ start_new_game() ->
 
   {ok, GameServerId, GameServerPid}.
 
+-spec game_stop(_,_) -> any().
 game_stop(GameServerPid, GameServerId) ->
   eggs_service:game_stop(GameServerPid, GameServerId).
 
+-spec stop(_) -> 'ok'.
 stop(_State) ->
   ok.
 

@@ -22,15 +22,18 @@
 -export([start/0]).
 -export([handle_cmd/2, init/1]).
 
+-spec start() -> 'ok'.
 start() ->
   io:format("Welcome to Example Game.~n"),
   io:format("(q + ENTER to exit)~n"),
   eggs_gateway_shell:start("Cmd> ", ?MODULE),
   io:format("Bye.~n").
 
+-spec init([]) -> {'ok',[]}.
 init([]) ->
   {ok, []}.
 
+-spec handle_cmd(_,_) -> {'ok',_} | {'stop','normal'}.
 handle_cmd("\n", State) ->
   {ok, State};
 handle_cmd("q\n", _State) ->
@@ -65,6 +68,7 @@ handle_cmd(Command, State) ->
 %% add_bindings(Bindings, [{Var, Value}| Tail]) ->
 %%   add_bindings(erl_eval:add_binding(Var, Value, Bindings), Tail).
 
+-spec cmd_start_new_game(_) -> {'ok',_}.
 cmd_start_new_game(State) ->
   io:format("Starting new game...~n"),
   {ok, GameServerId, GameServerPid} = example_game_command:do(start_new_game, none),
@@ -72,6 +76,7 @@ cmd_start_new_game(State) ->
   NewState = eggs_gateway_shell:state_set_property(State, [{game_server, GameServerPid}, {game_server_id, GameServerId}]),
   {ok, NewState}.
 
+-spec cmd_game_stop(_) -> {'ok',[]}.
 cmd_game_stop(State) ->
   io:format("Stopping game...~n"),
   GameServerPid = eggs_gateway_shell:state_get_property(State, game_server),
@@ -80,18 +85,19 @@ cmd_game_stop(State) ->
   NewState = [],
   {ok, NewState}.
 
+-spec cmd_login(_) -> {'ok',_}.
 cmd_login(State) ->
   NewState = case io:get_line(standard_io, "Login: ") of
     {error, Reason} ->
       io:format("error: ~p~n", [Reason]),
       State;
-    {eof} -> State;
+    eof -> State;
     Login ->
       case io:get_line(standard_io, "Password: ") of
         {error, Reason} ->
           io:format("error: ~p~n", [Reason]),
           State;
-        {eof} -> State;
+        eof -> State;
         Password ->
           GameServer = eggs_gateway_shell:state_get_property(State, game_server),
           case example_game_command:do(login, {GameServer, Login, Password}) of
@@ -104,6 +110,7 @@ cmd_login(State) ->
   end,
   {ok, NewState}.
 
+-spec cmd_load_character(_) -> {'ok',_}.
 cmd_load_character(State) ->
   NewState = case io:get_line(standard_io, "Id: ") of
     {error, Reason} ->
@@ -123,6 +130,7 @@ cmd_load_character(State) ->
   end,
   {ok, NewState}.
 
+-spec cmd_move(_) -> {'ok',_}.
 cmd_move(State) ->
   case io:get_line(standard_io, "x: ") of
     {error, Reason} ->
@@ -142,6 +150,7 @@ cmd_move(State) ->
   end,
   {ok, State}.
 
+-spec cmd_info_player(_) -> {'ok',_}.
 cmd_info_player(State) ->
   Player = eggs_gateway_shell:state_get_property(State, player),
   Info = example_game_command:do(player_info, Player),

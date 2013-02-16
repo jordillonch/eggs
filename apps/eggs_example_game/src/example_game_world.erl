@@ -23,51 +23,67 @@
 -export([frozen/2, running/2, run/1, froze/1, stop/1]).
 -export([get/2, set/2, set/3, entity_add/3, entity_remove/2, entity_move/3, entity_add_handler/3, entity_remove_handler/3, get_entities_list/1]).
 
+-spec initialize({_,_}) -> {'ok',_}.
 initialize({GameServerPid, WorldSupPid}) ->
   AreaSpecs = [{x, 0}, {y, 0}, {width, 1000}, {height, 1000}],
   {ok, WorldEntity} = eggs_world_simple_area:initialize({GameServerPid, WorldSupPid, ?MODULE, AreaSpecs}),
   {ok, WorldEntity}.
 
+-spec destroy(_) -> any().
 destroy(World) ->
   eggs_world_simple_area:destroy(World).
 
+-spec run(_) -> any().
 run(World) ->
   eggs_world_simple_area:run(World).
+-spec froze(_) -> any().
 froze(World) ->
   eggs_world_simple_area:froze(World).
 
+-spec frozen({_,_},_) -> {'next_state','frozen',_}.
 frozen({_Event, _Message}, World) ->
   {next_state, frozen, World}.
 
+-spec running({_,_},_) -> {'next_state','running',_}.
 running({_Event, _Message}, World) ->
   {next_state, running, World}.
 
 %% entity
+-spec get(_,_) -> any().
 get(World, Property) ->
   eggs_world_simple_area:get(World, Property).
+-spec set(_,_) -> any().
 set(World, Values) ->
   eggs_world_simple_area:set(World, Values).
+-spec set(_,_,_) -> any().
 set(World, Property, Value) ->
   eggs_world_simple_area:set(World, Property, Value).
 
+-spec entity_add(_,_,_) -> any().
 entity_add(World, Entity, Coords) ->
   eggs_world_simple_area:entity_add(World, Entity, Coords).
 
+-spec entity_remove(_,_) -> any().
 entity_remove(World, Entity) ->
   eggs_world_simple_area:entity_remove(World, Entity).
 
+-spec entity_move(_,_,_) -> any().
 entity_move(World, Entity, Coords) ->
   eggs_world_simple_area:entity_move(World, Entity, Coords).
 
+-spec entity_add_handler(_,_,_) -> any().
 entity_add_handler(World, Entity, Handler) ->
   eggs_world_simple_area:entity_add_handler(World, Entity, Handler).
 
+-spec entity_remove_handler(_,_,_) -> any().
 entity_remove_handler(World, Entity, Handler) ->
   eggs_world_simple_area:entity_remove_handler(World, Entity, Handler).
 
+-spec get_entities_list(_) -> any().
 get_entities_list(World) ->
   eggs_world_simple_area:get_entities_list(World).
 
+-spec stop(_) -> 'ok'.
 stop(_World) -> ok.
 
 %% %% API

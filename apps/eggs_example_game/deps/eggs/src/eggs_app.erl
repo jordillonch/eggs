@@ -23,11 +23,13 @@
   stop/1
 ]).
 
+-spec start(_,_) -> {'ok',pid()}.
 start(_Type, _StartArgs) ->
   lager:set_loglevel(lager_console_backend, debug),
   lager:debug("Starting EGGS app..."),
   {ok, Pid} = eggs_service:start_link(),
   {ok, Pid}.
 
+-spec stop(_) -> 'ok'.
 stop(_State) ->
   ok.

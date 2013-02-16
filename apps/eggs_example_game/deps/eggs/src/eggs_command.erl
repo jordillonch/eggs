@@ -20,6 +20,7 @@
 %% API
 -export([behaviour_info/1]).
 
+-spec behaviour_info(_) -> 'undefined' | [{'do',2},...].
 behaviour_info(callbacks) ->
   [{do, 2}];
 

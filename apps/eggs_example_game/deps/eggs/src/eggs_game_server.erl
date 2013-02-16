@@ -25,6 +25,7 @@
 -export([init/1]).
 
 %% API
+-spec start_link([any()]) -> {'ok',pid()}.
 start_link(GameConf) ->
   lager:debug("Starting EGGS game server..."),
   {ok, GameServerPid} = supervisor:start_link(?MODULE, GameConf),
@@ -33,6 +34,7 @@ start_link(GameConf) ->
 
 
 %% supervisor callbacks
+-spec init([any()]) -> {'ok',{{'one_for_one',5,10},[]}}.
 init(GameConf) ->
   % preinitialize entities
   % if they are initialized here, process owner is the game server supervisor so if we stop game server, ets tables are deleted
@@ -43,6 +45,7 @@ init(GameConf) ->
 
   {ok, {{one_for_one, 5, 10}, []}}.
 
+-spec start_game(pid(),[any()]) -> 'ok'.
 start_game(GameServerPid, GameConf) ->
   % start session supervisor
   SessionSup = {eggs_session_sup, {eggs_session_sup, start_link, []}, permanent, 2000, supervisor, dynamic},
@@ -82,6 +85,7 @@ start_game(GameServerPid, GameConf) ->
   % response
   ok.
 
+-spec start_trait_active_sup_root(pid(),_) -> {'ok','undefined' | pid()}.
 start_trait_active_sup_root(GameServerPid, _GameConf) ->
 %% start TraitActiveSupRoot supervisor
 %%   GamesServiceSup = {'eggs_games_service', {eggs_games_service, start_link, []},
@@ -94,35 +98,42 @@ start_trait_active_sup_root(GameServerPid, _GameConf) ->
   {ok, TraitActiveSupRootPid} = supervisor:start_child(GameServerPid, TraitActiveSupRoot),
   {ok, TraitActiveSupRootPid}.
 
+-spec start_active_entities('undefined' | pid(),[atom() | tuple()]) -> [{atom() | tuple(),'undefined' | pid() | []}].
 start_active_entities(_TraitActiveSupRootPid, []) -> [];
 start_active_entities(TraitActiveSupRootPid, [EntityName | EntitiesNames]) ->
   IsActiveEntity = eggs_trait_active:is_active_entity(EntityName),
   {ok, Pid} = start_active_entities(TraitActiveSupRootPid, EntityName, IsActiveEntity),
   [{EntityName, Pid} | start_active_entities(TraitActiveSupRootPid, EntitiesNames)].
+-spec start_active_entities('undefined' | pid(),atom() | tuple(),_) -> {'ok','undefined' | pid() | []}.
 start_active_entities(TraitActiveSupRootPid, EntityName, true) ->
   {ok, Pid} = eggs_trait_active_sup_root:start_active_entity_sup(TraitActiveSupRootPid, EntityName),
   {ok, Pid};
 start_active_entities(_TraitActiveSupRootPid, _EntityName, _) ->
   {ok, []}.
 
+-spec preinitialize_entities([atom()]) -> 'ok'.
 preinitialize_entities([]) -> ok;
 preinitialize_entities([Entity | Entities]) ->
   eggs_entity:preinitialize(Entity),
   preinitialize_entities(Entities).
 
 %% TODO: game data based on entity
+-spec game_data_table_name(pid()) -> atom().
 game_data_table_name(GameServerPid) ->
   list_to_atom("eggs_game_data_" ++ pid_to_list(GameServerPid)).
 
+-spec game_data_delete_table(pid()) -> 'true'.
 game_data_delete_table(GameServerPid) ->
   TableName = game_data_table_name(GameServerPid),
   ets:delete(TableName).
 
+-spec game_data_save(pid(),[{'active_entities_root_sup' | 'active_entities_sups' | 'session_sup' | 'world' | 'world_module' | 'world_sup',_},...]) -> 'true'.
 game_data_save(GameServerPid, GameData) ->
   TableName = game_data_table_name(GameServerPid),
   ets:new(TableName, [set, named_table, public]),
   ets:insert(TableName, GameData).
 
+-spec game_data_lookup(pid(),_) -> any().
 game_data_lookup(GameServerPid, Key) ->
   TableName = game_data_table_name(GameServerPid),
   case ets:lookup(TableName, Key) of

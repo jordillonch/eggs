@@ -22,9 +22,11 @@
 -export([init/1, handle_event/2, handle_call/2, handle_info/2, terminate/2,
   code_change/3]).
 
+-spec init(_) -> {'ok',_}.
 init(Entity) ->
   {ok, Entity}.
 
+-spec handle_event(_,_) -> {'ok',_}.
 handle_event({entity_moved, EntityMoved, Coords}, Entity) ->
   EntityModule = eggs_entity:get_module(Entity),
   EntityModule:handler_entity_moved(EntityMoved, Coords),
@@ -40,14 +42,18 @@ handle_event({entity_removed, EntityRemoved}, Entity) ->
 handle_event(_Event, Entity) ->
   {ok, Entity}.
 
+-spec handle_call(_,_) -> {'ok','reply',_}.
 handle_call(_Request, State) ->
   {ok, reply, State}.
 
+-spec handle_info(_,_) -> {'ok',_}.
 handle_info(_Info, State) ->
   {ok, State}.
 
+-spec terminate(_,_) -> 'ok'.
 terminate(_Arg, _State) ->
   ok.
 
+-spec code_change(_,_,_) -> {'ok',_}.
 code_change(_OldVsn, State, _Extra) ->
   {ok, State}.

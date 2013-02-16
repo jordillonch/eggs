@@ -21,6 +21,7 @@
 %% API
 -export([do/2]).
 
+-spec do('game_stop' | 'load_character' | 'login' | 'move' | 'player_info' | 'player_unload' | 'session_destroy' | 'start_new_game',_) -> any().
 do(start_new_game, _) ->
   example_game_app:start_new_game();
 

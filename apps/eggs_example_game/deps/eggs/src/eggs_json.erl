@@ -21,14 +21,17 @@
 -export([behaviour_info/1]).
 -export([encode/1, decode/1]).
 
+-spec behaviour_info(_) -> 'undefined' | [{'decode',1} | {'encode',1},...].
 behaviour_info(callbacks) ->
   [{encode, 1}, {decode, 1}];
 
 behaviour_info(_) ->
   undefined.
 
+-spec encode(_) -> any().
 encode(Data) ->
   Data.
 
+-spec decode(_) -> any().
 decode(Data) ->
   Data.

@@ -23,10 +23,12 @@
 
 %% Starts an active entity root supervisor
 %% We will start a supervisor for every type of active entities, supervised by this one
+-spec start_link(_) -> 'ignore' | {'error',_} | {'ok',pid()}.
 start_link(EntityName) ->
   lager:debug("Starting active entity supervisor for [~s] entities...", [EntityName]),
   supervisor:start_link(?MODULE, []).
 
+-spec init([]) -> {'ok',{{'one_for_one',0,1},[]}}.
 init([]) ->
   StartSpecs = {{one_for_one, 0, 1},[]},
   {ok, StartSpecs}.

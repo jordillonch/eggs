@@ -21,6 +21,7 @@
 -export([initialize/2, move/2]).
 
 %% behaviour
+-spec behaviour_info(_) -> 'undefined' | [{'handler_entity_added',2} | {'handler_entity_moved',2} | {'handler_entity_removed',1} | {'move',2},...].
 behaviour_info(callbacks) ->
   [{move, 2}, {handler_entity_moved, 2}, {handler_entity_added, 2}, {handler_entity_removed, 1}];
 
@@ -28,12 +29,14 @@ behaviour_info(_) ->
   undefined.
 
 %% api
+-spec initialize({atom(),_,_},_) -> 'ok'.
 initialize(SubjectEntity, NewPositionCoords) ->
   {World, WorldModule} = get_world_params(SubjectEntity),
   % add entity
   WorldModule:entity_add(World, SubjectEntity, NewPositionCoords),
   ok.
 
+-spec move({atom(),_,_},_) -> 'ok'.
 move(SubjectEntity, NewPositionCoords) ->
   {World, WorldModule} = get_world_params(SubjectEntity),
   % move
@@ -42,6 +45,7 @@ move(SubjectEntity, NewPositionCoords) ->
   eggs_entity:set(SubjectEntity, trait_movable_coord, NewPositionCoords),
   ok.
 
+-spec get_world_params({atom(),_,_}) -> {_,_}.
 get_world_params(SubjectEntity) ->
   % get world
   GameServerPid = eggs_entity:base_get(SubjectEntity, game_server_pid),

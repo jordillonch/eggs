@@ -21,6 +21,7 @@
 -export([run/3]).
 
 %% TimeWaitMoves = milliseconds
+-spec run(_,integer(),_) -> 'ok'.
 run(GameServer, NumMoves, TimeWaitMoves) ->
   <<A:32, B:32, C:32>> = crypto:rand_bytes(12),
   random:seed({A,B,C}),
@@ -57,6 +58,7 @@ run(GameServer, NumMoves, TimeWaitMoves) ->
 
   ok.
 
+-spec random_moves(_,'infinity' | non_neg_integer(),number(),number(),_,_,_,_) -> {'ok',{number(),number(),number(),number(),_,number()}}.
 random_moves(Player, TimeWaitMoves, XInit, YInit, _XDelta, _YDelta, Angle, Iteration) when Iteration > 5 ->
   NewAngleDelta = (2 * math:pi() / 3600) * random:uniform(20),
   NewAngle = Angle + NewAngleDelta,

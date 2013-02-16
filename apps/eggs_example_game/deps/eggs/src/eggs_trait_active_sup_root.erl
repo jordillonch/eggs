@@ -23,15 +23,18 @@
 
 %% Starts an active entity root supervisor
 %% We will start a supervisor for every type of active entities, supervised by this one
+-spec start_link() -> 'ignore' | {'error',_} | {'ok',pid()}.
 start_link() ->
   lager:debug("Starting EGGS active entity root supervisor..."),
   supervisor:start_link(?MODULE, []).
 
+-spec init([]) -> {'ok',{{'one_for_one',0,1},[]}}.
 init([]) ->
   StartSpecs = {{one_for_one, 0, 1},[]},
   {ok, StartSpecs}.
 
 %% Starts a supervisor for an active entity of a specific type
+-spec start_active_entity_sup(atom() | pid() | {atom(),atom()},_) -> {'ok','undefined' | pid()}.
 start_active_entity_sup(TraitActiveSupRootPid, EntityName) ->
   %% Starts a supervisor for this type of entity if not exists
   TraitActiveSupSpec = {EntityName, {eggs_trait_active_sup, start_link, [EntityName]}, permanent, 2000, supervisor, []},

@@ -21,8 +21,10 @@
 %% API
 -export([encode/1, decode/1]).
 
+-spec encode(_) -> any().
 encode(Data) ->
   Data.
 
+-spec decode(_) -> any().
 decode(Data) ->
   Data.

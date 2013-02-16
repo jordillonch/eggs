@@ -20,22 +20,25 @@
 %% API
 -export([start/2, behaviour_info/1, state_get_property/2, state_set_property/2, state_set_property/3]).
 
+-spec behaviour_info(_) -> 'undefined' | [{'handle_cmd',2} | {'init',1},...].
 behaviour_info(callbacks) ->
   [{handle_cmd,2}, {init, 1}];
 
 behaviour_info(_) ->
   undefined.
 
+-spec start(atom() | string(),atom() | tuple()) -> 'ok'.
 start(Prompt, Module) ->
   {ok, State} = Module:init([]),
   command_line(Module, Prompt, State).
 
+-spec command_line(atom() | tuple(),atom() | string(),_) -> 'ok'.
 command_line(Module, Prompt, State) ->
   case io:get_line(standard_io, Prompt) of
     {error, Reason} ->
       io:format("error: ~p~n", [Reason]),
       command_line(Module, Prompt, State);
-    {eof} ->
+    eof ->
       command_line(Module, Prompt, State);
     Command ->
       case Module:handle_cmd(Command, State) of
@@ -46,10 +49,13 @@ command_line(Module, Prompt, State) ->
       end
   end.
 
+-spec state_get_property([any()],_) -> any().
 state_get_property(State, Property) ->
   proplists:get_value(Property, State).
 
+-spec state_set_property([any()],maybe_improper_list()) -> maybe_improper_list().
 state_set_property(State, Values) when is_list(Values) ->
   State ++ Values.
+-spec state_set_property([any()],_,_) -> [any(),...].
 state_set_property(State, Property, Value) ->
   State ++ [{Property, Value}].

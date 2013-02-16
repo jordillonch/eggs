@@ -20,6 +20,7 @@
 %% API
 -export([behaviour_info/1]).
 
+-spec behaviour_info(_) -> 'undefined' | [{'initialize',1},...].
 behaviour_info(callbacks) ->
   [{initialize, 1}];
 

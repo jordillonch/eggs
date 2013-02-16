@@ -21,6 +21,7 @@
 %% API
 -export([initialize/1]).
 
+-spec initialize(_) -> 'ok'.
 initialize(_GameServerPid) ->
   ok.
 

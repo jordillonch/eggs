@@ -21,17 +21,21 @@
 %% API
 -export([connect/0, disconnect/0, send_command/1, handle_event/2]).
 
+-spec connect() -> any().
 connect() ->
-  eggs_lobby_websocket:connect().
+  eggs_gateway_websocket:connect().
 
+-spec disconnect() -> any().
 disconnect() ->
-  eggs_lobby_websocket:disconnect().
+  eggs_gateway_websocket:disconnect().
 
+-spec send_command(_) -> any().
 send_command(CommandData) ->
   {Command, Data} = example_game_json:decode(CommandData),
   example_game_command:do(Command, Data).
 
+-spec handle_event(_,_) -> any().
 handle_event(_Event, EventMessage) ->
   EventMessageCoded = example_game_json:encode(EventMessage),
-  eggs_lobby_websocket:send_to_client(EventMessageCoded).
+  eggs_gateway_websocket:send_to_client(EventMessageCoded).
 

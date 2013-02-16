@@ -20,6 +20,7 @@
 %% API
 -export([run/2, run_bot/3]).
 
+-spec run(non_neg_integer(),_) -> 'ok'.
 run(NumPlayers, NumMoves) ->
   io:format("starting new game~n"),
   {ok, GameServerId, GameServerPid} = example_game_command:do(start_new_game, none),
@@ -33,6 +34,7 @@ run(NumPlayers, NumMoves) ->
   ok = example_game_command:do(game_stop, {GameServerPid, GameServerId}),
   ok.
 
+-spec loop(non_neg_integer(),non_neg_integer(),'none' | number()) -> 'ok'.
 loop(NumPlayers, NumPlayers, AvgTime) ->
   AvgTimeMs = erlang:round(AvgTime/1000),
   io:format("Average time: ~p ms~n", [AvgTimeMs]),
@@ -49,6 +51,7 @@ loop(Current, NumPlayers, AvgTime) ->
   ok.
 
 
+-spec run_bot(atom() | pid() | port() | {atom(),atom()},_,integer()) -> 'ok'.
 run_bot(From, GameServerPid, NumMoves) ->
   T1 = now(),
   example_game_test_bot:run(GameServerPid, NumMoves, 0),

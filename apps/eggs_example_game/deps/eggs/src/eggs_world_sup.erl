@@ -25,6 +25,7 @@
 -export([init/1, start_world/1]).
 
 %% API
+-spec start_link(_,atom() | tuple()) -> {'ok',pid(),_}.
 start_link(GameServerPid, World) ->
   lager:debug("Starting world supervisor..."),
   {ok, WorldSupPid} = supervisor:start_link(?MODULE, []),
@@ -33,9 +34,11 @@ start_link(GameServerPid, World) ->
 
 
 %% supervisor callbacks
+-spec init([]) -> {'ok',{{'one_for_one',5,10},[]}}.
 init([]) ->
   {ok, {{one_for_one, 5, 10}, []}}.
 
+-spec start_world(atom() | pid() | {atom(),atom()}) -> {'ok','undefined' | pid()}.
 start_world(WorldSupPid) ->
   lager:debug("Starting new world..."),
   {ok, WorldPid} = supervisor:start_child(WorldSupPid, []),

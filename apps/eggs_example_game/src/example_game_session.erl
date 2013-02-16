@@ -23,19 +23,23 @@
 -export([not_auth/2, auth/2]).
 -export([get/2, set/2, set/3]).
 
+-spec initialize(_) -> any().
 initialize(GameServerPid) ->
   eggs_session:initialize({GameServerPid, ?MODULE}).
 
+-spec destroy(_) -> any().
 destroy(Session) ->
   eggs_session:destroy(Session).
 
 % TODO
+-spec login(_,_,_) -> {'ok',_}.
 login(Session, _Login, _Password) ->
   UserId = 1083,
   Session2 = eggs_session:set(Session, user_id, UserId),
   Session3 = eggs_session:notify_auth_ok(Session2),
   {ok, Session3}.
 
+-spec get_character(_,_) -> {'ok',[{'character_id',128} | {'name',[any(),...]} | {'x',float()} | {'y',float()},...]}.
 get_character(_Session, _CharacterId) -> % todo
   %% load character data from db
   CharacterSpecs = [
@@ -46,19 +50,25 @@ get_character(_Session, _CharacterId) -> % todo
   ],
   {ok, CharacterSpecs}.
 
+-spec get_game_server_pid(_) -> any().
 get_game_server_pid(Session) ->
   eggs_session:get_game_server_pid(Session).
 
+-spec not_auth({_,_},_) -> {'next_state','not_auth',_}.
 not_auth({_Event, _Message}, Session) ->
   {next_state, not_auth, Session}.
 
+-spec auth({_,_},_) -> {'next_state','auth',_}.
 auth({_Event, _Message}, Session) ->
   {next_state, auth, Session}.
 
 %% entity
+-spec get(_,_) -> any().
 get(Session, Property) ->
   eggs_session:get(Session, Property).
+-spec set(_,_) -> any().
 set(Session, Values) ->
   eggs_session:set(Session, Values).
+-spec set(_,_,_) -> any().
 set(Session, Property, Value) ->
   eggs_session:set(Session, Property, Value).

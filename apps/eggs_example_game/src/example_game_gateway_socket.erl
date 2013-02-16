@@ -27,6 +27,7 @@
 -export([start/0, loop/2, test_bots/4]).
 
 % echo_server specific code
+-spec start() -> {'ok',_,_,_,_,_}.
 start() ->
   io:format("starting new game~n"),
   {ok, GameServerId, GameServerPid} = example_game_command:do(start_new_game, none),
@@ -40,6 +41,7 @@ start() ->
   {ok, GameServerId, GameServerPid, SocketPid, Session, Player}.
 
 
+-spec loop(port(),{_,_,_}) -> 'ok'.
 loop(Socket, LoopData) ->
   {_Session, Player, World} = LoopData,
   case gen_tcp:recv(Socket, 0) of
@@ -88,6 +90,7 @@ loop(Socket, LoopData) ->
       ok
   end.
 
+-spec test_bots(_,integer(),_,_) -> [pid()].
 test_bots(GameServerPid, NumPlayers, NumMoves, TimeWaitMoves) ->
   List = lists:seq(1, NumPlayers),
   lists:map(fun(_A) -> spawn(example_game_test_bot, run, [GameServerPid, NumMoves, TimeWaitMoves]) end, List).
