@@ -71,10 +71,7 @@ The average move time with 1000 players doing 1000 moves everyone, is 18 ms. Thi
 Clone repository and then:
 
     cd <cloned dir>/apps/eggs_example_game
-    ./rebar get-deps
-    ./rebar compile
     make
-
 
 
 ## Quick start
@@ -114,7 +111,9 @@ Clone repository and then:
     [<0.89.0>,<0.90.0>,<0.91.0>,<0.92.0>,<0.93.0>,<0.94.0>,
      <0.95.0>,<0.96.0>,<0.97.0>,<0.98.0>]
 
-
+## Dialyzer
+    cd <cloned dir>/apps/eggs_example_game
+    make dialyzer
 
 ## Author
 

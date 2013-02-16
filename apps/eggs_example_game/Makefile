@@ -1,6 +1,22 @@
 APP:=example_game
 ERL:=erl
 EPATH:=ebin deps/*/ebin
+APPS:=erts stdlib kernel crypto sasl compiler syntax_tools
+PLT:=$(HOME)/.eggs_dialyzer_plt
+
+all: deps compile example_game.boot
+
+compile:
+	./rebar compile
+
+deps:
+	./rebar get-deps
+
+clean:
+	./rebar clean
+
+distclean: clean
+	./rebar delete-deps
 
 $(APP).boot: $(APP).rel Makefile
 	$(ERL) -pa $(EPATH) -noshell +B -eval \
@@ -17,3 +33,18 @@ $(APP).rel: ebin/$(APP).app Makefile
 	    {ok, Vsn} = application:get_key(App, vsn), \
         {App, Vsn} end, Apps ++ [$(basename $@)])}]), \
 	 file:close(F), halt(0)."
+
+build_plt: compile
+	dialyzer --build_plt --output_plt $(PLT) --apps $(APPS) deps/*/ebin
+
+check_plt: compile
+	dialyzer --check_plt --plt $(PLT) --apps $(APPS) deps/*/ebin
+
+dialyzer: compile
+	@echo
+	@echo Use "'make check_plt'" to check PLT prior to using this target.
+	@echo Use "'make build_plt'" to build PLT prior to using this target.
+	@echo
+	dialyzer --plt $(PLT) -Wno_undefined_callbacks ebin
+
+

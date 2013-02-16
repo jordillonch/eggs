@@ -7,14 +7,7 @@ cd apps/eggs_example_game
 typer -pa ebin -pa deps/*/ebin src/* --annotate
 
 
-Preparation
----
-cd apps/eggs_example_game
-dialyzer --build_plt --apps erts stdlib kernel crypto sasl compiler syntax_tools
-dialyzer --add_to_plt --apps deps/lager
-
-
 Analysis
 --------
 cd apps/eggs_example_game
-dialyzer -Wno_undefined_callbacks ebin deps/eggs/ebin
+make dialyzer
