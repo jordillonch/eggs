@@ -4,19 +4,16 @@ EPATH:=ebin deps/*/ebin
 APPS:=erts stdlib kernel crypto sasl compiler syntax_tools
 PLT:=$(HOME)/.eggs_dialyzer_plt
 
-all: deps compile example_game.boot
+all: get-deps compile example_game.boot
 
 compile:
 	./rebar compile
 
-deps:
+get-deps:
 	./rebar get-deps
 
 clean:
 	./rebar clean
-
-distclean: clean
-	./rebar delete-deps
 
 $(APP).boot: $(APP).rel Makefile
 	$(ERL) -pa $(EPATH) -noshell +B -eval \
