@@ -16,4 +16,5 @@ dialyzer --add_to_plt --apps deps/lager
 
 Analysis
 --------
-dialyzer --src -Wno_undefined_callbacks src/ deps/eggs/src/
+cd apps/eggs_example_game
+dialyzer -Wno_undefined_callbacks ebin deps/eggs/ebin
