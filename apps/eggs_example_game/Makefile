@@ -4,7 +4,7 @@ EPATH:=ebin deps/*/ebin
 APPS:=erts stdlib kernel crypto sasl compiler syntax_tools
 PLT:=$(HOME)/.eggs_dialyzer_plt
 
-all: get-deps compile example_game.boot
+all: get-deps compile $(APP).boot
 
 compile:
 	./rebar compile
@@ -23,7 +23,7 @@ $(APP).rel: ebin/$(APP).app Makefile
 	$(ERL) -pa $(EPATH) -noshell +B -eval \
 	"ok = application:load($(basename $@)), \
 	 {ok, Apps} = application:get_key($(basename $@), applications), \
-	 {ok, F} = file:open("$@", [write]), \
+	 {ok, F} = file:open(\"$@\", [write]), \
 	 io:format(F, \"~p.~n\", [{release, {\"$(basename $@)\", \"$(SRCREV)\"}, \
 	 {erts, erlang:system_info(version)}, \
 	 lists:map(fun (App) -> application:load(App), \
